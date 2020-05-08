@@ -1,0 +1,43 @@
+// _purbeurre.scss --- 
+// 
+// Filename: _purbeurre.scss
+// Author: Louise <louise>
+// Created: Sun Apr 26 21:36:56 2020 (+0200)
+// Last-Updated: Wed Apr 29 00:22:14 2020 (+0200)
+//           By: Louise <louise>
+// 
+
+.img-brand {
+    height: 1.8rem;
+    vertical-align: top;
+}
+
+.nav-link > svg {
+    height: 1em;
+    width: 1.25em;
+    fill: white;
+}
+
+.img-search-container {
+    position: relative;
+    
+    .img-search {
+	height: 10em;
+    }
+    
+    .nutriscore {
+	position: absolute;
+	top: -0.5em;
+	right: -0.5em;
+
+	text-transform: uppercase;
+    }
+}
+
+.selected-nutriscore {
+    font-size:1.5em;
+}
+
+footer {
+    background-color: $biscuit;
+}
