@@ -3,7 +3,7 @@
 # Filename: tests.py
 # Author: Louise <louise>
 # Created: Tue Apr 28 00:31:16 2020 (+0200)
-# Last-Updated: Fri May  1 00:27:56 2020 (+0200)
+# Last-Updated: Wed Jun 17 20:31:58 2020 (+0200)
 #           By: Louise <louise>
 #
 """
@@ -220,3 +220,9 @@ class TestUserAccount(UsersTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Chantal")
+
+class TestEditAccount(UsersTestCase):
+    """
+    Tests the edit account
+    """
+    pass

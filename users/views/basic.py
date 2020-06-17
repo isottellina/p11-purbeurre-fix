@@ -3,7 +3,7 @@
 # Filename: views.py
 # Author: Louise <louise>
 # Created: Mon Apr 27 14:00:21 2020 (+0200)
-# Last-Updated: Wed Jun 17 19:26:59 2020 (+0200)
+# Last-Updated: Wed Jun 17 20:33:32 2020 (+0200)
 #           By: Louise <louise>
 #
 from django.http import JsonResponse, Http404
@@ -43,10 +43,13 @@ def signup(request):
             user.save()
             login(request, user)
             return redirect('home:index')
+        else:
+            status = 400
     else:
         form = SignupForm()
+        status = 200
 
-    return render(request, "users/signup.html", {'form': form})
+    return render(request, "users/signup.html", {'form': form}, status=status)
 
 def signin(request):
     if request.method == "GET":
@@ -66,6 +69,7 @@ def signin(request):
                     return redirect(request.POST['next'])
                 else:
                     return redirect('home:index')
+            else:
                 error_message = "Nom d'utilisateur ou mot de passe incorrect"
         except KeyError: # a field was missing
             error_message = "Un des deux champs était vide"
@@ -74,7 +78,7 @@ def signin(request):
                       {
                           "error_message": error_message
                       },
-                      status=400
+                    status=400
         )
     
 def signout(request):
