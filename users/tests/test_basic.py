@@ -3,7 +3,7 @@
 # Filename: tests.py
 # Author: Louise <louise>
 # Created: Tue Apr 28 00:31:16 2020 (+0200)
-# Last-Updated: Wed Jun 17 20:31:58 2020 (+0200)
+# Last-Updated: Wed Jun 17 20:43:24 2020 (+0200)
 #           By: Louise <louise>
 #
 """
@@ -225,4 +225,52 @@ class TestEditAccount(UsersTestCase):
     """
     Tests the edit account
     """
-    pass
+    def test_get(self):
+        """
+        Tests that the form is filled with GET method.
+        """
+        self.client.login(
+            username=self.USER_USERNAME,
+            password=self.USER_PASSWORD
+        )
+        
+        response = self.client.get("/user/account/edit")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "value=\"Chantal\"")
+        
+    def test_valid(self):
+        """
+        Tests the best case.
+        """
+        self.client.login(
+            username=self.USER_USERNAME,
+            password=self.USER_PASSWORD
+        )
+        
+        response = self.client.post("/user/account/edit", {
+            "first_name": "Hélène",
+            "last_name": "",
+            "email": "chantal@beauregard.com",
+            "password": self.USER_PASSWORD
+        })
+
+        self.assertRedirects(response, "/user/account")
+        self.assertEqual(get_user(self.client).first_name, "Hélène")
+
+    def test_missing_password(self):
+        """
+        Tests the case where the password hasn't been filled.
+        """
+        self.client.login(
+            username=self.USER_USERNAME,
+            password=self.USER_PASSWORD
+        )
+        response = self.client.post("/user/account/edit", {
+            "first_name": "Hélène",
+            "last_name": "",
+            "email": "chantal@beauregard.com",
+            "password": ""
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(get_user(self.client).first_name, "Hélène")
