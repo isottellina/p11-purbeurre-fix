@@ -3,7 +3,7 @@
 // Filename: _purbeurre.scss
 // Author: Louise <louise>
 // Created: Sun Apr 26 21:36:56 2020 (+0200)
-// Last-Updated: Wed Apr 29 00:22:14 2020 (+0200)
+// Last-Updated: Wed Jun 17 20:04:05 2020 (+0200)
 //           By: Louise <louise>
 // 
 
@@ -12,10 +12,16 @@
     vertical-align: top;
 }
 
-.nav-link > svg {
-    height: 1em;
-    width: 1.25em;
-    fill: white;
+.nav-link {
+    img {
+	height: 2em;
+    }
+    
+    svg {
+	height: 1em;
+	width: 1.25em;
+	fill: white;
+    }
 }
 
 .img-search-container {
