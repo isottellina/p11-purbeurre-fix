@@ -3,7 +3,7 @@
 # Filename: urls.py
 # Author: Louise <louise>
 # Created: Mon Apr 27 14:28:50 2020 (+0200)
-# Last-Updated: Thu Apr 30 23:45:52 2020 (+0200)
+# Last-Updated: Wed Jun 17 18:25:35 2020 (+0200)
 #           By: Louise <louise>
 #
 """
@@ -21,6 +21,7 @@ urlpatterns = [
     path('signin', basic.signin, name='signin'),
     path('signout', basic.signout, name='signout'),
     path('account', basic.account, name='account'),
+    path('account/edit', basic.edit_account, name='edit_account'),
 
     path('save', save.save, name='save'),
     path('saved', save.show_saved, name='saved')

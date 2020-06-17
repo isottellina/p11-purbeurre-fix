@@ -12,8 +12,12 @@
         <hr class="divider my-4" />
 	<div class="mb-5">
 	  <ul>
+	    <li>Prénom : {{ request.user.first_name }}</li>
 	    <li>Adresse mail : {{ request.user.email }}</li>
 	  </ul>
+	  <a class="btn btn-primary btn-block" href="{% url 'users:edit_account' %}">
+	    Éditer mon profil
+	  </a>
 	</div>
       </div>
     </div>

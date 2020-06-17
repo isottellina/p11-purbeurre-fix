@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Éditer mon compte{% endblock %}
+{% block masttitle %}Éditer mon compte{% endblock %}
+
+{% block content %}
+<section class="page-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h2 class="mt-0 text-center">Éditer mon compte</h2>
+        <hr class="divider my-4" />
+	<div class="mb-5">
+	  
+	  <form class="container needs-validation" action="{% url 'users:edit_account' %}" method="post" novalidate>
+	    {% csrf_token %}
+	    <div class="row">
+	      <div class="form-group col-lg-6">
+		<label class="border-bottom" for="firstNameInput">Prénom *</label>
+		<input class="form-control" name="first_name" id="firstNameInput" value="{{ form.first_name.value }}" required>	
+		<div class="invalid-feedback">
+		  Veuillez entrer votre prénom.
+		</div>
+	      </div>
+	      <div class="form-group col-lg-6">
+		<label class="border-bottom" for="lastNameInput">Nom de famille</label>
+		<input class="form-control" name="last_name" id="lastNameInput" value="{{ form.last_name.value }}">
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-lg-12">
+		<label class="border-bottom" for="emailAddressInput">Adresse mail *</label>
+		<input type="email" class="form-control" name="email" id="emailAddressInput" value="{{ form.email.value }}" required>
+		<div class="invalid-feedback">
+		  Votre adresse e-mail est invalide.
+		</div>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-lg-12">
+		<label class="border-bottom" for="passwordInput">Mot de passe actuel*</label>
+		<input type="password" class="form-control" name="password" id="passwordInput" required>
+		<div class="invalid-feedback">
+		  Un mot de passe est requis.
+		</div>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-lg-12">
+		<button type="submit" class="btn btn-primary btn-block">Valider</button>
+	      </div>
+	    </div>
+	  </form>
+	</div>
+      </div>
+    </div>
+</section>
+{% endblock %}

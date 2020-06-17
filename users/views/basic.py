@@ -3,7 +3,7 @@
 # Filename: views.py
 # Author: Louise <louise>
 # Created: Mon Apr 27 14:00:21 2020 (+0200)
-# Last-Updated: Thu Apr 30 23:15:37 2020 (+0200)
+# Last-Updated: Wed Jun 17 19:26:59 2020 (+0200)
 #           By: Louise <louise>
 #
 from django.http import JsonResponse, Http404
@@ -12,19 +12,17 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from ..forms import UserForm
+from ..forms import SignupForm, EditProfileForm
 
 def signup(request):
     """
     Sign-up view.
     """
-    if request.method == "GET":
-        return render(request, "users/signup.html")
-    elif request.method == "POST":
-        user_form = UserForm(request.POST)
-        if user_form.is_valid():
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
             user_already_exists = User.objects.filter(
-                username=user_form.cleaned_data['username']
+                username=form.cleaned_data['username']
             ).exists()
             
             if user_already_exists:
@@ -35,19 +33,20 @@ def signup(request):
                               status=409)
             
             user = User.objects.create_user(
-                username=user_form.cleaned_data['username'],
-                first_name=user_form.cleaned_data['first_name'],
-                last_name=user_form.cleaned_data.get('last_name'),
-                email=user_form.cleaned_data['email'],
-                password=user_form.cleaned_data['password']
+                username=form.cleaned_data['username'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data.get('last_name'),
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
             )
 
             user.save()
             login(request, user)
             return redirect('home:index')
-        else:
-            # Return a HTTP 400 Bad Request code
-            return render(request, "users/signup.html", status=400)
+    else:
+        form = SignupForm()
+
+    return render(request, "users/signup.html", {'form': form})
 
 def signin(request):
     if request.method == "GET":
@@ -67,7 +66,7 @@ def signin(request):
                     return redirect(request.POST['next'])
                 else:
                     return redirect('home:index')
-            error_message = "Nom d'utilisateur ou mot de passe incorrect"
+                error_message = "Nom d'utilisateur ou mot de passe incorrect"
         except KeyError: # a field was missing
             error_message = "Un des deux champs était vide"
         return render(request,
@@ -77,7 +76,7 @@ def signin(request):
                       },
                       status=400
         )
-        
+    
 def signout(request):
     logout(request)
     return redirect('home:index')
@@ -86,3 +85,28 @@ def signout(request):
 def account(request):
     return render(request, "users/account.html")
 
+@login_required
+def edit_account(request):
+    if request.method == "POST":
+        form = EditProfileForm(request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=request.user.username,
+                password=form.cleaned_data['password']
+            )
+
+            if user is not None:
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data.get('last_name')
+                user.email = form.cleaned_data['email']
+                user.save()
+                
+                return redirect('users:account')
+    else:
+        form = EditProfileForm(initial={
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email
+        })
+    
+    return render(request, "users/edit_account.html", {'form': form})
